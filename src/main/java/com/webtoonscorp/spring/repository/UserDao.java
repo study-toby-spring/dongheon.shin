@@ -4,13 +4,9 @@ import com.webtoonscorp.spring.domain.User;
 
 import java.sql.*;
 
-public class UserDao {
+public abstract class UserDao {
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-
-        Class.forName("com.mysql.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "user", "user_password");
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 
     public void add(User user) throws ClassNotFoundException, SQLException {
 
