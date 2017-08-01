@@ -1,14 +1,14 @@
-package com.webtoonscorp.spring.repository.impl;
+package com.webtoonscorp.spring.support.impl;
 
-import com.webtoonscorp.spring.repository.UserDao;
+import com.webtoonscorp.spring.support.Connector;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class KakaoUserDao extends UserDao {
+public class KakaoConnector implements Connector {
 
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
+    public Connection createConnection() throws ClassNotFoundException, SQLException {
 
         System.out.println("Kakao");
 

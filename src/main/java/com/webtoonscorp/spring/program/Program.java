@@ -2,7 +2,6 @@ package com.webtoonscorp.spring.program;
 
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.UserDao;
-import com.webtoonscorp.spring.repository.impl.NaverUserDao;
 
 import java.sql.SQLException;
 
@@ -10,7 +9,7 @@ public class Program {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        UserDao dao = new NaverUserDao();
+        UserDao dao = new UserDao();
 
         User user = new User();
 

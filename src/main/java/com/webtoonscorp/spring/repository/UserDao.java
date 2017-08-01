@@ -1,16 +1,23 @@
 package com.webtoonscorp.spring.repository;
 
 import com.webtoonscorp.spring.domain.User;
+import com.webtoonscorp.spring.support.Connector;
+import com.webtoonscorp.spring.support.impl.NaverConnector;
 
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
 
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
+    private Connector connector;
+
+    public UserDao() {
+
+        this.connector = new NaverConnector();
+    }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
 
-        Connection connection = getConnection();
+        Connection connection = connector.createConnection();
 
         PreparedStatement preparedStatement = connection.prepareStatement("insert into users (id, name, password) values (?, ?, ?)");
 
@@ -26,7 +33,7 @@ public abstract class UserDao {
 
     public User get(String id) throws ClassNotFoundException, SQLException {
 
-        Connection connection = getConnection();
+        Connection connection = connector.createConnection();
 
         PreparedStatement preparedStatement = connection.prepareStatement("select * from users where id = ?");
         preparedStatement.setString(1, id);
