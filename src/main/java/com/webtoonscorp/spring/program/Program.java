@@ -2,6 +2,8 @@ package com.webtoonscorp.spring.program;
 
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.UserDao;
+import com.webtoonscorp.spring.support.Connector;
+import com.webtoonscorp.spring.support.impl.NaverConnector;
 
 import java.sql.SQLException;
 
@@ -9,7 +11,8 @@ public class Program {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        UserDao dao = new UserDao();
+        Connector connector = new NaverConnector();
+        UserDao dao = new UserDao(connector);
 
         User user = new User();
 
