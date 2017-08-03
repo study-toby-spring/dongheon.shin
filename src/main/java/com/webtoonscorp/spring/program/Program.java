@@ -3,6 +3,8 @@ package com.webtoonscorp.spring.program;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.factory.DaoFactory;
 import com.webtoonscorp.spring.repository.UserDao;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 
@@ -10,8 +12,8 @@ public class Program {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        DaoFactory daoFactory = new DaoFactory();
-        UserDao dao = daoFactory.userDao();
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
+        UserDao dao = applicationContext.getBean("userDao", UserDao.class);
 
         User user = new User();
 
