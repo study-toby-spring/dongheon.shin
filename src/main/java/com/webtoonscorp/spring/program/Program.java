@@ -1,8 +1,9 @@
 package com.webtoonscorp.spring.program;
 
 import com.webtoonscorp.spring.domain.User;
-import com.webtoonscorp.spring.factory.DaoFactory;
+import com.webtoonscorp.spring.factory.CountingDaoFactory;
 import com.webtoonscorp.spring.repository.UserDao;
+import com.webtoonscorp.spring.support.impl.CountingUniversalConnector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -12,7 +13,9 @@ public class Program {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
+
+        CountingUniversalConnector connector = applicationContext.getBean("connector", CountingUniversalConnector.class);
         UserDao dao = applicationContext.getBean("userDao", UserDao.class);
 
         User user = new User();
@@ -27,5 +30,7 @@ public class Program {
 
         System.out.println("name : " + found.getName());
         System.out.println("password : " + found.getPassword());
+
+        System.out.printf("counter : %d", connector.getCounter());
     }
 }
