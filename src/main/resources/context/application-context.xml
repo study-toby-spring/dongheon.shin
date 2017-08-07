@@ -3,14 +3,17 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="real_connector" class="com.webtoonscorp.spring.support.impl.NaverConnector"/>
+    <bean name="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 
-    <bean name="connector" class="com.webtoonscorp.spring.support.impl.CountingUniversalConnector">
-        <constructor-arg name="connector" ref="real_connector"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/spring"/>
+        <property name="username" value="user"/>
+        <property name="password" value="user_password"/>
+
     </bean>
 
     <bean name="userDao" class="com.webtoonscorp.spring.repository.UserDao">
-        <property name="connector" ref="connector"/>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
 </beans>
