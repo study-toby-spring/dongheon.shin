@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="real_connector" class="com.webtoonscorp.spring.support.impl.NaverConnector"/>
+
+    <bean name="connector" class="com.webtoonscorp.spring.support.impl.CountingUniversalConnector">
+        <constructor-arg name="connector" ref="real_connector"/>
+    </bean>
+
+    <bean name="userDao" class="com.webtoonscorp.spring.repository.UserDao">
+        <property name="connector" ref="connector"/>
+    </bean>
+
+</beans>
