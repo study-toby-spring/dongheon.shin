@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Appenders>
+
+        <File name="file" fileName="log.access" append="true">
+            <PatternLayout pattern="%d %-5p [%t] %-17c{2} (%13F:%L) %3x = %m%n" />
+        </File>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg :)%n" />
+        </Console>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="org.apache">
+            <level value="WARN"/>
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="file"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
