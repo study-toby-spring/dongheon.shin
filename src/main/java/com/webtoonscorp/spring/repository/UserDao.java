@@ -2,6 +2,7 @@ package com.webtoonscorp.spring.repository;
 
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.strategy.base.Statement;
+import com.webtoonscorp.spring.strategy.impl.AddStatement;
 import com.webtoonscorp.spring.strategy.impl.DeleteAllStatement;
 
 import javax.sql.DataSource;
@@ -24,18 +25,8 @@ public class UserDao {
 
     public void add(User user) throws SQLException {
 
-        Connection connection = dataSource.getConnection();
-
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into users (id, name, password) values (?, ?, ?)");
-
-        preparedStatement.setString(1, user.getId());
-        preparedStatement.setString(2, user.getName());
-        preparedStatement.setString(3, user.getPassword());
-
-        preparedStatement.executeUpdate();
-
-        preparedStatement.close();
-        connection.close();
+        Statement statement = new AddStatement(user);
+        jdbcContextWithStatement(statement);
     }
 
     public User get(String id) throws SQLException {
