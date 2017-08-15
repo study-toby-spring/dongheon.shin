@@ -20,7 +20,7 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
-    public void add(User user) throws ClassNotFoundException, SQLException {
+    public void add(User user) throws SQLException {
 
         Connection connection = dataSource.getConnection();
 
@@ -36,7 +36,7 @@ public class UserDao {
         connection.close();
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException {
+    public User get(String id) throws SQLException {
 
         Connection connection = dataSource.getConnection();
 
@@ -58,5 +58,28 @@ public class UserDao {
         connection.close();
 
         return user;
+    }
+
+    public int getCount() throws SQLException {
+
+        Connection connection = dataSource.getConnection();
+
+        PreparedStatement preparedStatement = connection.prepareStatement("select count(*) from users");
+        ResultSet result = preparedStatement.executeQuery();
+
+        result.next();
+
+        return result.getInt(1);
+    }
+
+    public void deleteAll() throws SQLException {
+
+        Connection connection = dataSource.getConnection();
+
+        PreparedStatement preparedStatement = connection.prepareStatement("delete * from users");
+        preparedStatement.executeUpdate();
+
+        preparedStatement.close();
+        connection.close();
     }
 }
