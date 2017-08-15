@@ -1,6 +1,8 @@
 package com.webtoonscorp.spring.repository;
 
 import com.webtoonscorp.spring.domain.User;
+import com.webtoonscorp.spring.strategy.base.Statement;
+import com.webtoonscorp.spring.strategy.impl.DeleteAllStatement;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -110,6 +112,12 @@ public class UserDao {
 
     public void deleteAll() throws SQLException {
 
+        Statement statement = new DeleteAllStatement();
+        jdbcContextWithStatement(statement);
+    }
+
+    private void jdbcContextWithStatement(Statement statement) throws SQLException {
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -117,11 +125,10 @@ public class UserDao {
 
             connection = dataSource.getConnection();
 
-            preparedStatement = connection.prepareStatement("delete * from users");
+            preparedStatement = statement.getPreparedStatement(connection);
             preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
-
             throw e;
         }
         finally {
