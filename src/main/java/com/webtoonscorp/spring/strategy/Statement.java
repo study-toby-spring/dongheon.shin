@@ -1,4 +1,4 @@
-package com.webtoonscorp.spring.strategy.base;
+package com.webtoonscorp.spring.strategy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
