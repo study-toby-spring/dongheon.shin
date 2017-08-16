@@ -23,7 +23,7 @@ public class UserDao {
 
     public void add(final User user) throws SQLException {
 
-        class AddStatement implements Statement {
+        jdbcContextWithStatement(new Statement() {
 
             public PreparedStatement getPreparedStatement(Connection connection) throws SQLException {
 
@@ -35,10 +35,7 @@ public class UserDao {
 
                 return preparedStatement;
             }
-        }
-
-        Statement statement = new AddStatement();
-        jdbcContextWithStatement(statement);
+        });
     }
 
     public User get(String id) throws SQLException {
@@ -115,16 +112,13 @@ public class UserDao {
 
     public void deleteAll() throws SQLException {
 
-        class DeleteAllStatement implements Statement {
+        jdbcContextWithStatement(new Statement() {
 
             public PreparedStatement getPreparedStatement(Connection connection) throws SQLException {
 
                 return connection.prepareStatement("delete * from users");
             }
-        }
-
-        Statement statement = new DeleteAllStatement();
-        jdbcContextWithStatement(statement);
+        });
     }
 
     private void jdbcContextWithStatement(Statement statement) throws SQLException {
