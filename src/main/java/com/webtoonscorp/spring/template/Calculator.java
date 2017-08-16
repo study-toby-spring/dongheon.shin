@@ -8,43 +8,27 @@ public class Calculator {
 
     public Integer calcSum(String path) throws IOException {
 
-        BufferedReaderCallback callback = new BufferedReaderCallback() {
+        LineCallback callback = new LineCallback() {
 
-            public Integer doSomethingWithReader(BufferedReader reader) throws IOException {
-
-                String line;
-                Integer sum = 0;
-
-                while ((line = reader.readLine()) != null) {
-                    sum += Integer.valueOf(line);
-                }
-
-                return sum;
+            public Integer doSomethingWithLine(String line, Integer value) {
+                return Integer.valueOf(line) + value;
             }
         };
 
-        return fileReadTemplate(path, callback);
+        return lineReadTemplate(path, callback, 0);
     }
 
 
     public Integer calcMul(String path) throws IOException {
 
-        BufferedReaderCallback callback = new BufferedReaderCallback() {
+        LineCallback callback = new LineCallback() {
 
-            public Integer doSomethingWithReader(BufferedReader reader) throws IOException {
-
-                String line;
-                Integer sum = 1;
-
-                while ((line = reader.readLine()) != null) {
-                    sum *= Integer.valueOf(line);
-                }
-
-                return sum;
+            public Integer doSomethingWithLine(String line, Integer value) {
+                return Integer.valueOf(line) * value;
             }
         };
 
-        return fileReadTemplate(path, callback);
+        return lineReadTemplate(path, callback, 1);
     }
 
     private Integer fileReadTemplate(String path, BufferedReaderCallback callback) throws IOException {
@@ -55,6 +39,44 @@ public class Calculator {
 
             reader = new BufferedReader(new FileReader(path));
             return callback.doSomethingWithReader(reader);
+        }
+        catch (IOException e) {
+
+            System.out.println(e.getMessage());
+            throw e;
+        }
+        finally {
+
+            if (reader != null) {
+
+                try {
+
+                    reader.close();
+                }
+                catch (IOException e) {
+
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+
+    private Integer lineReadTemplate(String path, LineCallback callback, int initValue) throws IOException {
+
+        BufferedReader reader = null;
+        String line;
+
+        Integer value = initValue;
+
+        try {
+
+            reader = new BufferedReader(new FileReader(path));
+
+            while ((line = reader.readLine()) != null) {
+                value = callback.doSomethingWithLine(line, value);
+            }
+
+            return value;
         }
         catch (IOException e) {
 
