@@ -1,5 +1,6 @@
 package com.webtoonscorp.spring.repository;
 
+import com.webtoonscorp.spring.context.JdbcContext;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.strategy.Statement;
 
@@ -12,18 +13,19 @@ import java.sql.SQLException;
 public class UserDao {
 
     private DataSource dataSource;
-
-    public DataSource getDataSource() {
-        return this.dataSource;
-    }
+    private JdbcContext jdbcContext;
 
     public void setDataSource(DataSource dataSource) {
+
+        jdbcContext = new JdbcContext();
+        jdbcContext.setDataSource(dataSource);
+
         this.dataSource = dataSource;
     }
 
     public void add(final User user) throws SQLException {
 
-        jdbcContextWithStatement(new Statement() {
+        jdbcContext.workWithStatement(new Statement() {
 
             public PreparedStatement getPreparedStatement(Connection connection) throws SQLException {
 
@@ -112,49 +114,12 @@ public class UserDao {
 
     public void deleteAll() throws SQLException {
 
-        jdbcContextWithStatement(new Statement() {
+        jdbcContext.workWithStatement(new Statement() {
 
             public PreparedStatement getPreparedStatement(Connection connection) throws SQLException {
 
                 return connection.prepareStatement("delete * from users");
             }
         });
-    }
-
-    private void jdbcContextWithStatement(Statement statement) throws SQLException {
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-
-            connection = dataSource.getConnection();
-
-            preparedStatement = statement.getPreparedStatement(connection);
-            preparedStatement.executeUpdate();
-        }
-        catch (SQLException e) {
-            throw e;
-        }
-        finally {
-
-            if (preparedStatement != null) {
-
-                try {
-
-                    preparedStatement.close();
-                }
-                catch (SQLException e) { }
-            }
-
-            if (connection != null) {
-
-                try {
-
-                    connection.close();
-                }
-                catch (SQLException e) { }
-            }
-        }
     }
 }
