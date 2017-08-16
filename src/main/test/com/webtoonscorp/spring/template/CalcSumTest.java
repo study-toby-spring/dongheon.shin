@@ -33,4 +33,11 @@ public class CalcSumTest {
         int sum = calculator.calcMul(path);
         assertThat(sum, is(24));
     }
+
+    @Test
+    public void concatenate() throws IOException {
+
+        String str = calculator.concatenate(path);
+        assertThat(str, is("1234"));
+    }
 }
