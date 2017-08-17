@@ -1,130 +1,79 @@
 package com.webtoonscorp.spring.repository;
 
-import com.webtoonscorp.spring.context.JdbcContext;
 import com.webtoonscorp.spring.domain.User;
-import com.webtoonscorp.spring.strategy.Statement;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
 
-    private DataSource dataSource;
-    private JdbcContext jdbcContext;
+    private JdbcTemplate jdbcTemplate;
+
+    private RowMapper<User> mapper = new RowMapper<User>() {
+
+        public User mapRow(ResultSet result, int row) throws SQLException {
+
+            User user = new User();
+
+            user.setId(result.getString("id"));
+            user.setName(result.getString("name"));
+            user.setPassword(result.getString("password"));
+
+            return user;
+        }
+    };
 
     public void setDataSource(DataSource dataSource) {
 
-        jdbcContext = new JdbcContext();
-        jdbcContext.setDataSource(dataSource);
-
-        this.dataSource = dataSource;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public void add(final User user) throws SQLException {
 
-        jdbcContext.workWithStatement(new Statement() {
+        jdbcTemplate.update("insert into users (id, name, password) values (?, ?, ?)", user.getId(), user.getName(), user.getPassword());
+    }
 
-            public PreparedStatement getPreparedStatement(Connection connection) throws SQLException {
+    public List<User> getAll() {
 
-                PreparedStatement preparedStatement = connection.prepareStatement("insert into users (id, name, password) values (?, ?, ?)");
-
-                preparedStatement.setString(1, user.getId());
-                preparedStatement.setString(2, user.getName());
-                preparedStatement.setString(3, user.getPassword());
-
-                return preparedStatement;
-            }
-        });
+        return jdbcTemplate.query("select * from users order by id", mapper);
     }
 
     public User get(String id) throws SQLException {
 
-        Connection connection = dataSource.getConnection();
-
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from users where id = ?");
-        preparedStatement.setString(1, id);
-
-        ResultSet result = preparedStatement.executeQuery();
-        result.next();
-
-
-        User user = new User();
-
-        user.setId(result.getString("id"));
-        user.setName(result.getString("name"));
-        user.setPassword(result.getString("password"));
-
-        result.close();
-        preparedStatement.close();
-        connection.close();
-
-        return user;
+        return jdbcTemplate.queryForObject("select * from users where id = ?", new Object[] { id }, mapper);
     }
 
     public int getCount() throws SQLException {
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet result = null;
+        return jdbcTemplate.query(
+                new PreparedStatementCreator() {
 
-        try {
+                    public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                        return connection.prepareStatement("select count(*) from users");
+                    }
+                },
+                new ResultSetExtractor<Integer>() {
 
-            preparedStatement = connection.prepareStatement("select count(*) from users");
-            result = preparedStatement.executeQuery();
+                    public Integer extractData(ResultSet result) throws SQLException, DataAccessException {
 
-            result.next();
-            return result.getInt(1);
-        }
-        catch (SQLException e) {
-            throw e;
-        }
-        finally {
-
-            if (result != null) {
-
-                try {
-
-                    result.close();
-                }
-                catch (SQLException e) { }
-            }
-
-            if (preparedStatement != null) {
-
-                try {
-
-                    preparedStatement.close();
-                }
-                catch (SQLException e) { }
-            }
-
-            if (connection != null) {
-
-                try {
-
-                    connection.close();
-                }
-                catch (SQLException e) { }
-            }
-        }
+                        result.next();
+                        return result.getInt(1);
+                    }
+                });
     }
 
     public void deleteAll() throws SQLException {
 
-        executeSql("delete * from users");
-    }
-
-    private void executeSql(final String query) throws SQLException {
-
-        jdbcContext.workWithStatement(new Statement() {
-
-            public PreparedStatement getPreparedStatement(Connection connection) throws SQLException {
-
-                return connection.prepareStatement(query);
-            }
-        });
+        jdbcTemplate.update("delete from users");
     }
 }
