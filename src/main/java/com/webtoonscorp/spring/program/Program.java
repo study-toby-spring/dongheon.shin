@@ -2,6 +2,7 @@ package com.webtoonscorp.spring.program;
 
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.UserDao;
+import com.webtoonscorp.spring.repository.UserDaoJdbc;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -12,7 +13,7 @@ public class Program {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:/context/application-context.xml");
-        UserDao dao = applicationContext.getBean("userDao", UserDao.class);
+        UserDao dao = applicationContext.getBean("userDao", UserDaoJdbc.class);
 
         User user = new User();
 

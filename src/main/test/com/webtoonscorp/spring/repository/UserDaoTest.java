@@ -1,13 +1,20 @@
 package com.webtoonscorp.spring.repository;
 
 import com.webtoonscorp.spring.domain.User;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +27,9 @@ public class UserDaoTest {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private DataSource dataSource;
 
     private List<User> users;
 
@@ -42,6 +52,25 @@ public class UserDaoTest {
         user.setPassword(password);
 
         return user;
+    }
+
+    @Test
+    public void duplicatedUserScenario() {
+
+        User user = users.get(0);
+
+        try {
+
+            userDao.add(user);
+            userDao.add(user);
+        }
+        catch (DuplicateKeyException e) {
+
+            SQLException exception = (SQLException) e.getRootCause();
+            SQLExceptionTranslator set = new SQLErrorCodeSQLExceptionTranslator(dataSource);
+
+            assertThat(set.translate(null, null, exception) instanceof DuplicateKeyException, is(true));
+        }
     }
 
     @Test
