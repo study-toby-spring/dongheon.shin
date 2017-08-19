@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao {
@@ -38,7 +37,7 @@ public class UserDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void add(final User user) throws SQLException {
+    public void add(final User user) {
 
         jdbcTemplate.update("insert into users (id, name, password) values (?, ?, ?)", user.getId(), user.getName(), user.getPassword());
     }
@@ -48,12 +47,12 @@ public class UserDao {
         return jdbcTemplate.query("select * from users order by id", mapper);
     }
 
-    public User get(String id) throws SQLException {
+    public User get(String id) {
 
         return jdbcTemplate.queryForObject("select * from users where id = ?", new Object[] { id }, mapper);
     }
 
-    public int getCount() throws SQLException {
+    public int getCount() {
 
         return jdbcTemplate.query(
                 new PreparedStatementCreator() {
@@ -72,7 +71,7 @@ public class UserDao {
                 });
     }
 
-    public void deleteAll() throws SQLException {
+    public void deleteAll() {
 
         jdbcTemplate.update("delete from users");
     }

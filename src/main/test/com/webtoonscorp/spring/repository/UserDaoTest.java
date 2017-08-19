@@ -47,13 +47,19 @@ public class UserDaoTest {
     @Test
     public void getAll() throws Exception {
 
+        List<User> fromDao;
+
         userDao.deleteAll();
+
+        fromDao = userDao.getAll();
+
+        assertThat(fromDao.size(), is(0));
 
         for (User user : users) {
             userDao.add(user);
         }
 
-        List<User> fromDao = userDao.getAll();
+        fromDao = userDao.getAll();
         assertThat(fromDao.size(), is(3));
 
         for (int i = 0; i < fromDao.size(); i++)
