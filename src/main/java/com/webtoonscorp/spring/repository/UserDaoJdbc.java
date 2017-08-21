@@ -1,6 +1,7 @@
 package com.webtoonscorp.spring.repository;
 
 import com.webtoonscorp.spring.domain.User;
+import com.webtoonscorp.spring.type.Level;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -27,6 +28,9 @@ public class UserDaoJdbc implements UserDao {
             user.setId(result.getString("id"));
             user.setName(result.getString("name"));
             user.setPassword(result.getString("password"));
+            user.setLevel(Level.valueOf(result.getInt("level")));
+            user.setLogin(result.getInt("login"));
+            user.setRecommend(result.getInt("recommend"));
 
             return user;
         }
@@ -39,7 +43,7 @@ public class UserDaoJdbc implements UserDao {
 
     public void add(final User user) {
 
-        jdbcTemplate.update("insert into users (id, name, password) values (?, ?, ?)", user.getId(), user.getName(), user.getPassword());
+        jdbcTemplate.update("insert into users (id, name, password, level, login, recommend) values (?, ?, ?, ?, ?, ?)", user.getId(), user.getName(), user.getPassword(), user.getLevel().intValue(), user.getLogin(), user.getRecommend());
     }
 
     public List<User> getAll() {
