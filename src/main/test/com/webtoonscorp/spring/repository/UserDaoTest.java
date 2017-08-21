@@ -64,6 +64,32 @@ public class UserDaoTest {
     }
 
     @Test
+    public void update() {
+
+        userDao.deleteAll();
+
+        User user = users.get(0);
+        User another = users.get(1);
+
+        userDao.add(user);
+        userDao.add(another);
+
+        user.setName("another");
+        user.setPassword("password");
+        user.setLevel(Level.GOLD);
+        user.setLogin(1000);
+        user.setRecommend(999);
+
+        userDao.update(user);
+
+        User updated = userDao.get(user.getId());
+        assertEquals(user, updated);
+
+        User notChanged = userDao.get(another.getId());
+        assertEquals(another, notChanged);
+    }
+
+    @Test
     public void getAll() throws Exception {
 
         List<User> fromDao;
