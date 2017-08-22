@@ -3,7 +3,11 @@ package com.webtoonscorp.spring.service;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.UserDao;
 import com.webtoonscorp.spring.type.Level;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.List;
 
 public class UserService {
@@ -12,9 +16,14 @@ public class UserService {
     public static final int MIN_RECCOMEND_FOR_GOLD = 30;
 
     private UserDao userDao;
+    private DataSource dataSource;
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public void add(User user) {
@@ -25,14 +34,36 @@ public class UserService {
         userDao.add(user);
     }
 
-    public void upgradeLevels() {
+    public void upgradeLevels() throws Exception {
 
-        List<User> users = userDao.getAll();
+        TransactionSynchronizationManager.initSynchronization();
 
-        for (User user : users) {
+        Connection connection = DataSourceUtils.getConnection(dataSource);
+        connection.setAutoCommit(false);
 
-            if (canUpgradeLevel(user))
-                upgradeLevel(user);
+        try {
+
+            List<User> users = userDao.getAll();
+
+            for (User user : users) {
+
+                if (canUpgradeLevel(user))
+                    upgradeLevel(user);
+            }
+
+            connection.commit();
+        }
+        catch (Exception e) {
+
+            connection.rollback();
+            throw e;
+        }
+        finally {
+
+            DataSourceUtils.releaseConnection(connection, dataSource);
+
+            TransactionSynchronizationManager.unbindResource(dataSource);
+            TransactionSynchronizationManager.clearSynchronization();
         }
     }
 
