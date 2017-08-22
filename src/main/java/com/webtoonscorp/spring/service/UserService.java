@@ -8,6 +8,9 @@ import java.util.List;
 
 public class UserService {
 
+    public static final int MIN_LOG_COUNT_FOR_SILVER = 50;
+    public static final int MIN_RECCOMEND_FOR_GOLD = 30;
+
     private UserDao userDao;
 
     public void setUserDao(UserDao userDao) {
@@ -28,28 +31,27 @@ public class UserService {
 
         for (User user : users) {
 
-            boolean changed = false;
-            Level level = user.getLevel();
+            if (canUpgradeLevel(user))
+                upgradeLevel(user);
+        }
+    }
 
-            if (level == Level.BASIC && user.getLogin() >= 50) {
+    private void upgradeLevel(User user) {
 
-                user.setLevel(Level.SILVER);
-                changed = true;
-            }
-            else if (level == Level.SILVER && user.getRecommend() >= 30) {
+        user.upgradeLevel();
+        userDao.update(user);
+    }
 
-                user.setLevel(Level.GOLD);
-                changed = true;
-            }
-            else if (level == Level.GOLD) {
+    private boolean canUpgradeLevel(User user) {
 
-                changed = false;
-            }
+        Level level = user.getLevel();
 
-            if (changed) {
+        switch (level) {
 
-                userDao.update(user);
-            }
+            case BASIC: return user.getLogin() >= MIN_LOG_COUNT_FOR_SILVER;
+            case SILVER: return user.getRecommend() >= MIN_RECCOMEND_FOR_GOLD;
+            case GOLD: return false;
+            default: throw new IllegalArgumentException("Unknown level " + level);
         }
     }
 }

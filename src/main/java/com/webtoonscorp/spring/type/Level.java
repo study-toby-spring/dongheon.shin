@@ -4,18 +4,24 @@ import sun.plugin.dom.exception.InvalidStateException;
 
 public enum  Level {
 
-    BASIC(1),
-    SILVER(2),
-    GOLD(3);
+    GOLD(3, null),
+    SILVER(2, GOLD),
+    BASIC(1, SILVER);
 
     private int level;
+    private Level next;
 
-    Level(int level) {
+    Level(int level, Level next) {
         this.level = level;
+        this.next = next;
     }
 
     public int intValue() {
         return level;
+    }
+
+    public Level next() {
+        return next;
     }
 
     public static Level valueOf(int level) {
