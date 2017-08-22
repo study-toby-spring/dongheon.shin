@@ -3,11 +3,12 @@ package com.webtoonscorp.spring.service;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.UserDao;
 import com.webtoonscorp.spring.type.Level;
-import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.util.List;
 
 public class UserService {
@@ -36,10 +37,8 @@ public class UserService {
 
     public void upgradeLevels() throws Exception {
 
-        TransactionSynchronizationManager.initSynchronization();
-
-        Connection connection = DataSourceUtils.getConnection(dataSource);
-        connection.setAutoCommit(false);
+        PlatformTransactionManager manager = new DataSourceTransactionManager(dataSource);
+        TransactionStatus status = manager.getTransaction(new DefaultTransactionDefinition());
 
         try {
 
@@ -51,19 +50,12 @@ public class UserService {
                     upgradeLevel(user);
             }
 
-            connection.commit();
+            manager.commit(status);
         }
         catch (Exception e) {
 
-            connection.rollback();
+            manager.rollback(status);
             throw e;
-        }
-        finally {
-
-            DataSourceUtils.releaseConnection(connection, dataSource);
-
-            TransactionSynchronizationManager.unbindResource(dataSource);
-            TransactionSynchronizationManager.clearSynchronization();
         }
     }
 
