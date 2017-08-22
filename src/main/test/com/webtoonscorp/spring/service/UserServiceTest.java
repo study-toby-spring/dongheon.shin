@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
-import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class UserServiceTest {
     private UserDao userDao;
 
     @Autowired
-    private DataSource dataSource;
+    private PlatformTransactionManager manager;
 
     List<User> users;
 
@@ -87,7 +87,7 @@ public class UserServiceTest {
         UserService mock = new TestUserService(texture.getId());
 
         mock.setUserDao(userDao);
-        mock.setDataSource(dataSource);
+        mock.setTransactionManager(manager);
 
         userDao.deleteAll();
 

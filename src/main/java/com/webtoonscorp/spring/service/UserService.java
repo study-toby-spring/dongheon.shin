@@ -3,12 +3,10 @@ package com.webtoonscorp.spring.service;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.UserDao;
 import com.webtoonscorp.spring.type.Level;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 public class UserService {
@@ -17,14 +15,14 @@ public class UserService {
     public static final int MIN_RECCOMEND_FOR_GOLD = 30;
 
     private UserDao userDao;
-    private DataSource dataSource;
+    private PlatformTransactionManager manager;
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setTransactionManager(PlatformTransactionManager manager) {
+        this.manager = manager;
     }
 
     public void add(User user) {
@@ -37,7 +35,6 @@ public class UserService {
 
     public void upgradeLevels() throws Exception {
 
-        PlatformTransactionManager manager = new DataSourceTransactionManager(dataSource);
         TransactionStatus status = manager.getTransaction(new DefaultTransactionDefinition());
 
         try {
