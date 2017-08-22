@@ -76,6 +76,31 @@ public class UserServiceTest {
     }
 
     @Test
+    public void upgradeAllOrNothing() {
+
+        User texture = users.get(3);
+
+        UserService mock = new TestUserService(texture.getId());
+        mock.setUserDao(userDao);
+
+        userDao.deleteAll();
+
+        for (User user : users)
+            userDao.add(user);
+
+        try {
+
+            mock.upgradeLevels();
+            fail("TestUserServiceException expected");
+        }
+        catch (TestUserServiceException e) {
+
+        }
+
+        checkLevelUpgraded(users.get(1), false);
+    }
+
+    @Test
     public void add() {
 
         userDao.deleteAll();
