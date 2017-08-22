@@ -2,12 +2,10 @@ package com.webtoonscorp.spring.repository;
 
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.type.Level;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/context/application-context.xml")
@@ -39,9 +37,9 @@ public class UserDaoTest {
 
         users = new ArrayList<User>();
 
-        users.add(new User("1", "dongheon.shin", "123", Level.BASIC, 1, 0));
-        users.add(new User("2", "dongheon", "456", Level.SILVER, 55, 10));
-        users.add(new User("3", "xdxo", "789", Level.GOLD, 100, 40));
+        users.add(new User("1", "dongheon.shin", "123", "niah_raszagal@live.com", Level.BASIC, 1, 0));
+        users.add(new User("2", "dongheon", "456", "leucosian@gmail.com", Level.SILVER, 55, 10));
+        users.add(new User("3", "xdxo", "789", "niah_lawliet@naver.com", Level.GOLD, 100, 40));
     }
 
     @Test
@@ -76,6 +74,7 @@ public class UserDaoTest {
 
         user.setName("another");
         user.setPassword("password");
+        user.setEmail("echeverial@naver.com");
         user.setLevel(Level.GOLD);
         user.setLogin(1000);
         user.setRecommend(999);

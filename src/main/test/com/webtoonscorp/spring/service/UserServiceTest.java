@@ -37,11 +37,11 @@ public class UserServiceTest {
 
         users = new ArrayList<User>();
 
-        users.add(new User("1", "a", "a_pw", Level.BASIC, 49, 0));
-        users.add(new User("2", "b", "b_pw", Level.BASIC, 50, 0));
-        users.add(new User("3", "c", "c_pw", Level.SILVER, 60, 29));
-        users.add(new User("4", "d", "d_pw", Level.SILVER, 60, 30));
-        users.add(new User("5", "e", "e_pw", Level.GOLD, 100, 100));
+        users.add(new User("1", "a", "a_pw", "niah_raszagal@live.com", Level.BASIC, 49, 0));
+        users.add(new User("2", "b", "b_pw", "leucosian@gmail.com", Level.BASIC, 50, 0));
+        users.add(new User("3", "c", "c_pw", "niah_lawliet@naver.com", Level.SILVER, 60, 29));
+        users.add(new User("4", "d", "d_pw", "account@domain.com", Level.SILVER, 60, 30));
+        users.add(new User("5", "e", "e_pw", "user@domain.com", Level.GOLD, 100, 100));
     }
 
     @Test

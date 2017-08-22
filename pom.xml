@@ -13,6 +13,7 @@
 
         <spring-version>4.3.10.RELEASE</spring-version>
         <mysql-connector-java-version>5.1.43</mysql-connector-java-version>
+        <javax-mail-version>1.4.7</javax-mail-version>
         <junit-version>4.12</junit-version>
 
     </properties>
@@ -35,6 +36,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax-mail-version}</version>
         </dependency>
 
         <dependency>
