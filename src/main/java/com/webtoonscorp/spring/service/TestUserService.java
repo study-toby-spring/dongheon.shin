@@ -2,7 +2,7 @@ package com.webtoonscorp.spring.service;
 
 import com.webtoonscorp.spring.domain.User;
 
-public class TestUserService extends UserService {
+public class TestUserService extends UserServiceImpl {
 
     private String id;
 

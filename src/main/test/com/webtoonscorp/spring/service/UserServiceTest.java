@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,7 +25,7 @@ import static org.junit.Assert.*;
 public class UserServiceTest {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private UserDao userDao;
@@ -97,10 +96,15 @@ public class UserServiceTest {
 
         User texture = users.get(3);
 
-        UserService mock = new TestUserService(texture.getId());
+        TestUserService mock = new TestUserService(texture.getId());
 
         mock.setUserDao(userDao);
-        mock.setTransactionManager(manager);
+        mock.setMailSender(new TestMailSender());
+
+        UserServiceTx txUserService = new UserServiceTx();
+
+        txUserService.setTransactionManager(manager);
+        txUserService.setUserService(mock);
 
         userDao.deleteAll();
 
@@ -109,7 +113,7 @@ public class UserServiceTest {
 
         try {
 
-            mock.upgradeLevels();
+            txUserService.upgradeLevels();
             fail("TestUserServiceException expected");
         }
         catch (TestUserServiceException e) {
