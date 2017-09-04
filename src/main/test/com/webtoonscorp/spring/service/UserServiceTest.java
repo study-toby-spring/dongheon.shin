@@ -1,6 +1,7 @@
 package com.webtoonscorp.spring.service;
 
 import com.webtoonscorp.spring.domain.User;
+import com.webtoonscorp.spring.repository.TestUserDao;
 import com.webtoonscorp.spring.repository.UserDao;
 import com.webtoonscorp.spring.support.mail.TestMailSender;
 import com.webtoonscorp.spring.type.Level;
@@ -56,27 +57,34 @@ public class UserServiceTest {
     @Test
     public void upgradeLevels() throws Exception {
 
-        userDao.deleteAll();
-
-        for (User user : users)
-            userDao.add(user);
-
         TestMailSender mailSender = new TestMailSender();
+        TestUserDao userDao = new TestUserDao(this.users);
+
+        userService = new UserServiceImpl();
+
+        userService.setUserDao(userDao);
         userService.setMailSender(mailSender);
 
         userService.upgradeLevels();
 
-        checkLevelUpgraded(users.get(0), false);
-        checkLevelUpgraded(users.get(1), true);
-        checkLevelUpgraded(users.get(2), false);
-        checkLevelUpgraded(users.get(3), true);
-        checkLevelUpgraded(users.get(4), false);
+        List<User> updated = userDao.getUpdated();
+
+        assertThat(updated.size(), is(2));
+
+        checkUserAndLevel(users.get(0), "a", Level.BASIC);
+        checkUserAndLevel(users.get(1), "b", Level.SILVER);
 
         List<String> requests = mailSender.getRequests();
 
         assertThat(requests.size(), is(2));
         assertThat(requests.get(0), is(users.get(1).getEmail()));
         assertThat(requests.get(1), is(users.get(3).getEmail()));
+    }
+
+    private void checkUserAndLevel(User user, String name, Level level) {
+
+        assertThat(user.getName(), is(name));
+        assertThat(user.getLevel(), is(level));
     }
 
     private void checkLevelUpgraded(User user, boolean upgraded) {
