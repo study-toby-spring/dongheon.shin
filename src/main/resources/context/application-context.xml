@@ -35,4 +35,8 @@
 
     <bean name="mailSender" class="com.webtoonscorp.spring.support.mail.MailSenderImpl"/>
 
+    <bean name="message" class="com.webtoonscorp.spring.factory.MessageFactoryBean">
+        <property name="text" value="dongheon"/>
+    </bean>
+
 </beans>
