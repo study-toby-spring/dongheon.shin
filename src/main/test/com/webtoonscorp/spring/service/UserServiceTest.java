@@ -4,6 +4,7 @@ import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.TestUserDao;
 import com.webtoonscorp.spring.repository.UserDao;
 import com.webtoonscorp.spring.support.mail.TestMailSender;
+import com.webtoonscorp.spring.support.transaction.TransactionHandler;
 import com.webtoonscorp.spring.type.Level;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,14 +145,16 @@ public class UserServiceTest {
         User texture = users.get(3);
 
         TestUserService mock = new TestUserService(texture.getId());
+        TransactionHandler handler = new TransactionHandler();
+
+        handler.setTarget(mock);
+        handler.setPattern("upgradeLevels");
+        handler.setManager(manager);
 
         mock.setUserDao(userDao);
         mock.setMailSender(new TestMailSender());
 
-        UserServiceTx txUserService = new UserServiceTx();
-
-        txUserService.setTransactionManager(manager);
-        txUserService.setUserService(mock);
+        UserService userService = (UserService) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[] { UserService.class }, handler);
 
         userDao.deleteAll();
 
@@ -159,7 +163,7 @@ public class UserServiceTest {
 
         try {
 
-            txUserService.upgradeLevels();
+            userService.upgradeLevels();
             fail("TestUserServiceException expected");
         }
         catch (TestUserServiceException e) {
