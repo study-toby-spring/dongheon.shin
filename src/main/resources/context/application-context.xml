@@ -28,9 +28,11 @@
         <property name="mailSender" ref="mailSender"/>
     </bean>
 
-    <bean name="userService" class="com.webtoonscorp.spring.service.UserServiceTx">
-        <property name="userService" ref="userServiceImpl"/>
-        <property name="transactionManager" ref="manager"/>
+    <bean name="userService" class="com.webtoonscorp.spring.support.transaction.TransactionProxyFactoryBean">
+        <property name="target" ref="userServiceImpl"/>
+        <property name="manager" ref="manager"/>
+        <property name="pattern" value="upgradeLevels"/>
+        <property name="serviceInterface" value="com.webtoonscorp.spring.service.UserService"/>
     </bean>
 
     <bean name="mailSender" class="com.webtoonscorp.spring.support.mail.MailSenderImpl"/>
