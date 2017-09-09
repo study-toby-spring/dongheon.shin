@@ -2,6 +2,8 @@ package com.webtoonscorp.spring.proxy;
 
 import org.junit.Test;
 import org.springframework.aop.framework.ProxyFactoryBean;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.aop.support.NameMatchMethodPointcut;
 
 import java.lang.reflect.Proxy;
 
@@ -57,5 +59,23 @@ public class HelloTest {
         assertThat(proxy.sayHello("dongheon"), is("HELLO, DONGHEON"));
         assertThat(proxy.sayHi("dongheon"), is("HI, DONGHEON"));
         assertThat(proxy.sayThankYou("dongheon"), is("THANK YOU, DONGHEON"));
+    }
+
+    @Test
+    public void pointcutAdvisor() {
+
+        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
+        pointcut.setMappedName("sayH*");
+
+        ProxyFactoryBean bean = new ProxyFactoryBean();
+
+        bean.setTarget(new HelloTarget());
+        bean.addAdvisor(new DefaultPointcutAdvisor(pointcut, new HelloAdvice()));
+
+        Hello proxy = (Hello) bean.getObject();
+
+        assertThat(proxy.sayHello("dongheon"), is("HELLO, DONGHEON"));
+        assertThat(proxy.sayHi("dongheon"), is("HI, DONGHEON"));
+        assertThat(proxy.sayThankYou("dongheon"), is("Thank you, dongheon"));
     }
 }
