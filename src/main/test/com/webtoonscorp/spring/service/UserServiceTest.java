@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailSender;
@@ -160,7 +161,7 @@ public class UserServiceTest {
         mock.setUserDao(userDao);
         mock.setMailSender(new TestMailSender());
 
-        TransactionProxyFactoryBean bean = context.getBean("&userService", TransactionProxyFactoryBean.class);
+        ProxyFactoryBean bean = context.getBean("&userService", ProxyFactoryBean.class);
         bean.setTarget(mock);
 
         UserService userService = (UserService) bean.getObject();
