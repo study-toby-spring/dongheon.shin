@@ -1,11 +1,12 @@
 package com.webtoonscorp.spring.proxy;
 
 import org.junit.Test;
+import org.springframework.aop.framework.ProxyFactoryBean;
 
 import java.lang.reflect.Proxy;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class HelloTest {
 
@@ -41,5 +42,20 @@ public class HelloTest {
         assertThat(target.sayHello("dongheon"), is("HELLO, DONGHEON"));
         assertThat(target.sayHi("dongheon"), is("HI, DONGHEON"));
         assertThat(target.sayThankYou("dongheon"), is("THANK YOU, DONGHEON"));
+    }
+
+    @Test
+    public void proxyFactoryBean() {
+
+        ProxyFactoryBean bean = new ProxyFactoryBean();
+
+        bean.setTarget(new HelloTarget());
+        bean.addAdvice(new HelloAdvice());
+
+        Hello proxy = (Hello) bean.getObject();
+
+        assertThat(proxy.sayHello("dongheon"), is("HELLO, DONGHEON"));
+        assertThat(proxy.sayHi("dongheon"), is("HI, DONGHEON"));
+        assertThat(proxy.sayThankYou("dongheon"), is("THANK YOU, DONGHEON"));
     }
 }
