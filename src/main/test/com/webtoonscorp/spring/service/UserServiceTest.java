@@ -16,6 +16,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,5 +193,11 @@ public class UserServiceTest {
         assertThat(user1.getLevel(), is(user2.getLevel()));
         assertThat(user1.getLogin(), is(user2.getLogin()));
         assertThat(user1.getRecommend(), is(user2.getRecommend()));
+    }
+
+    @Test
+    public void advisorAutoProxyCreator() {
+
+        assertThat(testUserService instanceof Proxy, is(true));
     }
 }
