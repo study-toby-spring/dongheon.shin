@@ -23,22 +23,16 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean name="userServiceImpl" class="com.webtoonscorp.spring.service.UserServiceImpl">
+    <bean name="userService" class="com.webtoonscorp.spring.service.UserServiceImpl">
         <property name="userDao" ref="userDao"/>
-        <property name="mailSender" ref="mailSender"/>
+        <property name="mailSender" ref="testMailSender"/>
     </bean>
 
-    <bean name="userService" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="target" ref="userServiceImpl"/>
-        <property name="interfaces" value="com.webtoonscorp.spring.service.UserService"/>
-        <property name="interceptorNames">
-            <list>
-                <value>transactionAdvisor</value>
-            </list>
-        </property>
-    </bean>
+    <bean name="testUserService" class="com.webtoonscorp.spring.service.UserServiceTest$TestUserServiceImpl" parent="userService"/>
 
     <bean name="mailSender" class="com.webtoonscorp.spring.support.mail.MailSenderImpl"/>
+
+    <bean name="testMailSender" class="com.webtoonscorp.spring.support.mail.TestMailSender"/>
 
     <bean name="message" class="com.webtoonscorp.spring.factory.MessageFactoryBean">
         <property name="text" value="dongheon"/>
@@ -48,7 +42,8 @@
         <property name="manager" ref="manager"/>
     </bean>
 
-    <bean name="transactionPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+    <bean name="transactionPointcut" class="com.webtoonscorp.spring.aop.DualPointcut">
+        <property name="mappedClassName" value="*ServiceImpl"/>
         <property name="mappedName" value="upgrade*"/>
     </bean>
 
@@ -56,5 +51,7 @@
         <property name="advice" ref="transactionAdvice"/>
         <property name="pointcut" ref="transactionPointcut"/>
     </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
 
 </beans>
