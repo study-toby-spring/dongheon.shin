@@ -1,7 +1,5 @@
 package com.webtoonscorp.spring.type;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 public enum  Level {
 
     GOLD(3, null),
@@ -32,7 +30,7 @@ public enum  Level {
             case 2: return SILVER;
             case 3: return GOLD;
 
-            default: throw new InvalidStateException("Unknown value : " + level);
+            default: throw new IllegalStateException("Unknown value : " + level);
         }
     }
 }
