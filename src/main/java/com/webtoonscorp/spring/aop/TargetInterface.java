@@ -1,4 +1,4 @@
-package com.webtoonscorp.spring.aop.target;
+package com.webtoonscorp.spring.aop;
 
 public interface TargetInterface {
 
