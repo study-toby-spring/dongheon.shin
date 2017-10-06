@@ -14,6 +14,7 @@
         <spring-version>4.3.10.RELEASE</spring-version>
         <mysql-connector-java-version>5.1.43</mysql-connector-java-version>
         <javax-mail-version>1.4.7</javax-mail-version>
+        <aspectj-version>1.8.11</aspectj-version>
         <junit-version>4.12</junit-version>
         <mockito-version>2.9.0</mockito-version>
 
@@ -49,6 +50,18 @@
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>${javax-mail-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>${aspectj-version}</version>
         </dependency>
 
         <dependency>

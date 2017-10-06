@@ -42,7 +42,7 @@
         <property name="manager" ref="manager"/>
     </bean>
 
-    <bean name="transactionPointcut" class="com.webtoonscorp.spring.aop.DualPointcut">
+    <bean name="transactionPointcut" class="com.webtoonscorp.spring.aop.pointcut.DualPointcut">
         <property name="mappedClassName" value="*ServiceImpl"/>
         <property name="mappedName" value="upgrade*"/>
     </bean>

@@ -1,4 +1,4 @@
-package com.webtoonscorp.spring.aop;
+package com.webtoonscorp.spring.aop.pointcut;
 
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.support.NameMatchMethodPointcut;
