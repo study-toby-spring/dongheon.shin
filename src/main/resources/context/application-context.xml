@@ -7,13 +7,12 @@
 
     <context:property-placeholder location="classpath*:property/*.properties"/>
     <aop:config>
-        <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* *..*ServiceImpl.upgrade*(..))"/>
+        <aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)"/>
     </aop:config>
 
     <tx:advice id="transactionAdvice" transaction-manager="manager">
         <tx:attributes>
             <tx:method name="get*" read-only="true" timeout="30"/>
-            <tx:method name="upgrade*" propagation="REQUIRES_NEW" isolation="SERIALIZABLE"/>
             <tx:method name="*"/>
         </tx:attributes>
     </tx:advice>

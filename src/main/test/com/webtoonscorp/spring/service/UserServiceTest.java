@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.annotation.DirtiesContext;
@@ -51,6 +52,16 @@ public class UserServiceTest {
 
             user.upgradeLevel();
         }
+
+        @Override
+        public List<User> getAll() {
+
+            for (User user : super.getAll()) {
+                super.update(user);
+            }
+
+            return null;
+        }
     }
 
     @Before
@@ -63,6 +74,11 @@ public class UserServiceTest {
         users.add(new User("3", "c", "c_pw", "niah_lawliet@naver.com", Level.SILVER, 60, 29));
         users.add(new User("4", "d", "d_pw", "account@domain.com", Level.SILVER, 60, 30));
         users.add(new User("5", "e", "e_pw", "user@domain.com", Level.GOLD, 100, 100));
+    }
+
+    @Test(expected = TransientDataAccessResourceException.class)
+    public void readOnlyTransactionAttribute() {
+        testUserService.getAll();
     }
 
     @Test
