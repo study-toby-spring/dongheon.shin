@@ -90,19 +90,18 @@ public class UserServiceTest {
     @Test
     public void transactionSync() {
 
-        userService.deleteAll();
-        assertThat(userDao.getCount(), is(0));
-
         TransactionStatus status = manager.getTransaction(new DefaultTransactionDefinition());
 
-        userService.add(users.get(0));
-        userService.add(users.get(1));
+        try {
 
-        assertThat(userDao.getCount(), is(2));
+            userService.deleteAll();
 
-        manager.rollback(status);
-
-        assertThat(userDao.getCount(), is(0));
+            userService.add(users.get(0));
+            userService.add(users.get(1));
+        }
+        finally {
+            manager.rollback(status);
+        }
     }
 
     @Test
