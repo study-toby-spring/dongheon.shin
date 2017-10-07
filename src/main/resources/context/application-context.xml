@@ -42,8 +42,15 @@
         <property name="text" value="dongheon"/>
     </bean>
 
-    <bean name="transactionAdvice" class="com.webtoonscorp.spring.support.transaction.TransactionAdvice">
-        <property name="manager" ref="manager"/>
+    <bean name="transactionAdvice" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="manager"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly,timeout_30</prop>
+                <prop key="upgrade*">PROPAGATION_REQUIRES_NEW,ISOLATION_SERIALIZABLE</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
     </bean>
 
 </beans>
