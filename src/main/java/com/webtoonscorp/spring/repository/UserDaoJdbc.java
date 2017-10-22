@@ -17,6 +17,8 @@ import java.util.List;
 
 public class UserDaoJdbc implements UserDao {
 
+    private String sqlAdd;
+
     private JdbcTemplate jdbcTemplate;
 
     private RowMapper<User> mapper = new RowMapper<User>() {
@@ -42,9 +44,14 @@ public class UserDaoJdbc implements UserDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    public void setSqlAdd(String sqlAdd) {
+
+        this.sqlAdd = sqlAdd;
+    }
+
     public void add(final User user) {
 
-        jdbcTemplate.update("insert into users (id, name, password, email, level, login, recommend) values (?, ?, ?, ?, ?, ?, ?)", user.getId(), user.getName(), user.getPassword(), user.getEmail(), user.getLevel().intValue(), user.getLogin(), user.getRecommend());
+        jdbcTemplate.update(this.sqlAdd, user.getId(), user.getName(), user.getPassword(), user.getEmail(), user.getLevel().intValue(), user.getLogin(), user.getRecommend());
     }
 
     public List<User> getAll() {

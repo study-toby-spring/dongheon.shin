@@ -24,6 +24,7 @@
 
     <bean name="userDao" class="com.webtoonscorp.spring.repository.UserDaoJdbc">
         <property name="dataSource" ref="dataSource"/>
+        <property name="sqlAdd" value="insert into users (id, name, password, email, level, login, recommend) values (?, ?, ?, ?, ?, ?, ?)"/>
     </bean>
 
     <bean name="userService" class="com.webtoonscorp.spring.service.UserServiceImpl">
