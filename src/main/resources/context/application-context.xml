@@ -35,8 +35,8 @@
         <property name="mailSender" ref="testMailSender"/>
     </bean>
 
-    <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="contextPath" value="com.webtoonscorp.spring.jaxb"/>
+    <bean id="unmarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+        <property name="mappingLocation" value="/sql/mapping.xml"/>
     </bean>
 
     <bean name="testUserService" class="com.webtoonscorp.spring.service.UserServiceTest$TestUserServiceImpl" parent="userService"/>

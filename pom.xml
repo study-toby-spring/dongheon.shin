@@ -15,6 +15,7 @@
         <mysql-connector-java-version>5.1.43</mysql-connector-java-version>
         <javax-mail-version>1.4.7</javax-mail-version>
         <aspectj-version>1.8.11</aspectj-version>
+        <castor-version>1.4.1</castor-version>
         <junit-version>4.12</junit-version>
         <mockito-version>2.9.0</mockito-version>
 
@@ -75,6 +76,12 @@
             <artifactId>spring-test</artifactId>
             <version>${spring-version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.castor</groupId>
+            <artifactId>castor-xml</artifactId>
+            <version>${castor-version}</version>
         </dependency>
 
         <dependency>
