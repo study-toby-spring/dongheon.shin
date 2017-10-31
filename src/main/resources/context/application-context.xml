@@ -30,6 +30,8 @@
 
     <bean name="sqlService" class="com.webtoonscorp.spring.service.sql.XmlSqlService">
         <property name="sqlMapFile" value="/sql/sqlmap.xml"/>
+        <property name="sqlRegistry" ref="sqlService"/>
+        <property name="sqlReader" ref="sqlService"/>
     </bean>
     
     <bean name="userService" class="com.webtoonscorp.spring.service.UserServiceImpl">
