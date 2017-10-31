@@ -28,11 +28,7 @@
         <property name="sqlService" ref="sqlService"/>
     </bean>
 
-    <bean name="sqlService" class="com.webtoonscorp.spring.service.sql.XmlSqlService">
-        <property name="sqlMapFile" value="/sql/sqlmap.xml"/>
-        <property name="sqlRegistry" ref="sqlService"/>
-        <property name="sqlReader" ref="sqlService"/>
-    </bean>
+    <bean name="sqlService" class="com.webtoonscorp.spring.service.sql.service.DefaultSqlService"/>
     
     <bean name="userService" class="com.webtoonscorp.spring.service.UserServiceImpl">
         <property name="userDao" ref="userDao"/>

@@ -1,7 +1,7 @@
 package com.webtoonscorp.spring.repository;
 
 import com.webtoonscorp.spring.domain.User;
-import com.webtoonscorp.spring.service.sql.SqlService;
+import com.webtoonscorp.spring.service.sql.service.SqlService;
 import com.webtoonscorp.spring.type.Level;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

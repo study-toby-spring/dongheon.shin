@@ -1,4 +1,4 @@
-package com.webtoonscorp.spring.service.sql;
+package com.webtoonscorp.spring.service.sql.service;
 
 import com.webtoonscorp.spring.exception.SqlRetrievalFailureException;
 
