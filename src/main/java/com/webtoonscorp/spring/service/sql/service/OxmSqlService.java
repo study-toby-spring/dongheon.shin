@@ -6,6 +6,8 @@ import com.webtoonscorp.spring.jaxb.Sqlmap;
 import com.webtoonscorp.spring.service.sql.reader.SqlReader;
 import com.webtoonscorp.spring.service.sql.registry.HashMapSqlRegistry;
 import com.webtoonscorp.spring.service.sql.registry.SqlRegistry;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.oxm.Unmarshaller;
 
 import javax.annotation.PostConstruct;
@@ -28,18 +30,16 @@ public class OxmSqlService implements SqlService {
 
     private class OxmSqlReader implements SqlReader {
 
-        private static final String DEFAULT_SQLMAP_FILEPATH = "/sql/sqlmap.xml";
+        private Resource sqlMap = new ClassPathResource("/sql/sqlmap.xml");
 
-        private String sqlMapFile = DEFAULT_SQLMAP_FILEPATH;
+        public Resource getSqlMap() {
 
-        public String getSqlMapFile() {
-
-            return this.sqlMapFile;
+            return this.sqlMap;
         }
 
-        public void setSqlMapFile(String sqlMapFile) {
+        public void setSqlMap(Resource sqlMap) {
 
-            this.sqlMapFile = sqlMapFile;
+            this.sqlMap = sqlMap;
         }
 
         private Unmarshaller unmarshaller;
@@ -53,7 +53,7 @@ public class OxmSqlService implements SqlService {
 
             try {
 
-                Source source = new StreamSource(getClass().getResourceAsStream(getSqlMapFile()));
+                Source source = new StreamSource(sqlMap.getInputStream());
                 Sqlmap sqlmap = (Sqlmap) unmarshaller.unmarshal(source);
 
                 for (SqlType type : sqlmap.getSql()) {
@@ -68,18 +68,14 @@ public class OxmSqlService implements SqlService {
     }
 
 
-    private Unmarshaller unmarshaller;
-
     public void setUnmarshaller(Unmarshaller unmarshaller) {
 
         reader.setUnmarshaller(unmarshaller);
     }
 
-    private String sqlMapFile;
+    public void setSqlMap(Resource sqlMap) {
 
-    public void setSqlMapFile(String sqlMapFile) {
-
-        reader.setSqlMapFile(sqlMapFile);
+        reader.setSqlMap(sqlMap);
     }
 
 

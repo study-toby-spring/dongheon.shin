@@ -30,6 +30,7 @@
 
     <bean name="sqlService" class="com.webtoonscorp.spring.service.sql.service.OxmSqlService">
         <property name="unmarshaller" ref="unmarshaller"/>
+        <property name="sqlMap" value="classpath:/sql/sqlmap.xml"/>
     </bean>
     
     <bean name="userService" class="com.webtoonscorp.spring.service.UserServiceImpl">
