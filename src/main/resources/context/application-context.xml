@@ -30,6 +30,7 @@
 
     <bean name="sqlService" class="com.webtoonscorp.spring.service.sql.service.OxmSqlService">
         <property name="unmarshaller" ref="unmarshaller"/>
+        <property name="sqlRegistry" ref="sqlRegistry"/>
         <property name="sqlMap" value="classpath:/sql/sqlmap.xml"/>
     </bean>
     
@@ -41,6 +42,8 @@
     <bean id="unmarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
         <property name="mappingLocation" value="/sql/mapping.xml"/>
     </bean>
+
+    <bean id="sqlRegistry" class="com.webtoonscorp.spring.service.sql.registry.UpdatableHashMapSqlRegistry"/>
 
     <bean name="testUserService" class="com.webtoonscorp.spring.service.UserServiceTest$TestUserServiceImpl" parent="userService"/>
 
