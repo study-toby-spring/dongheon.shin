@@ -28,7 +28,9 @@
         <property name="sqlService" ref="sqlService"/>
     </bean>
 
-    <bean name="sqlService" class="com.webtoonscorp.spring.service.sql.service.DefaultSqlService"/>
+    <bean name="sqlService" class="com.webtoonscorp.spring.service.sql.service.OxmSqlService">
+        <property name="unmarshaller" ref="unmarshaller"/>
+    </bean>
     
     <bean name="userService" class="com.webtoonscorp.spring.service.UserServiceImpl">
         <property name="userDao" ref="userDao"/>
