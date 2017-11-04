@@ -21,7 +21,7 @@ public class ConcurrentHashMapSqlRegistryTest {
     @Before
     public void setup() {
 
-        registry = new UpdatableHashMapSqlRegistry();
+        registry = new ConcurrentHashMapSqlRegistry();
 
         for (int i = 0; i < 3; i++) {
             registry.register(keys[i], sqls[i]);

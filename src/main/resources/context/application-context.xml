@@ -43,7 +43,7 @@
         <property name="mappingLocation" value="/sql/mapping.xml"/>
     </bean>
 
-    <bean id="sqlRegistry" class="com.webtoonscorp.spring.service.sql.registry.UpdatableHashMapSqlRegistry"/>
+    <bean id="sqlRegistry" class="com.webtoonscorp.spring.service.sql.registry.ConcurrentHashMapSqlRegistry"/>
 
     <bean name="testUserService" class="com.webtoonscorp.spring.service.UserServiceTest$TestUserServiceImpl" parent="userService"/>
 
