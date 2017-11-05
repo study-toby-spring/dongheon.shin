@@ -3,17 +3,23 @@ package com.webtoonscorp.spring.service;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.UserDao;
 import com.webtoonscorp.spring.type.Level;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service("userService")
 public class UserServiceImpl implements UserService {
 
     public static final int MIN_LOG_COUNT_FOR_SILVER = 50;
     public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 
+    @Autowired
     private MailSender mailSender;
+
+    @Autowired
     private UserDao userDao;
 
     public void setMailSender(MailSender mailSender) {
