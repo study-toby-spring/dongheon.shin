@@ -55,13 +55,7 @@ public class SpringPracticeConfiguration {
 
     @Bean
     public UserDao userDao() {
-
-        UserDaoJdbc dao = new UserDaoJdbc();
-
-        dao.setDataSource(dataSource());
-        dao.setSqlService(sqlService());
-
-        return dao;
+        return new UserDaoJdbc();
     }
 
     @Bean
@@ -93,13 +87,7 @@ public class SpringPracticeConfiguration {
 
     @Bean
     public SqlService sqlService() {
-
-        OxmSqlService sqlService = new OxmSqlService();
-
-        sqlService.setUnmarshaller(unmarshaller());
-        sqlService.setSqlRegistry(sqlRegistry());
-
-        return sqlService;
+        return new OxmSqlService();
     }
 
     @Bean

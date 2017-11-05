@@ -6,6 +6,7 @@ import com.webtoonscorp.spring.jaxb.Sqlmap;
 import com.webtoonscorp.spring.service.sql.reader.SqlReader;
 import com.webtoonscorp.spring.service.sql.registry.HashMapSqlRegistry;
 import com.webtoonscorp.spring.service.sql.registry.SqlRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.Unmarshaller;
@@ -21,6 +22,7 @@ public class OxmSqlService implements SqlService {
 
     private SqlRegistry registry = new HashMapSqlRegistry();
 
+    @Autowired
     public void setSqlRegistry(SqlRegistry registry) {
 
         this.registry = registry;
@@ -67,7 +69,7 @@ public class OxmSqlService implements SqlService {
         }
     }
 
-
+    @Autowired
     public void setUnmarshaller(Unmarshaller unmarshaller) {
 
         reader.setUnmarshaller(unmarshaller);

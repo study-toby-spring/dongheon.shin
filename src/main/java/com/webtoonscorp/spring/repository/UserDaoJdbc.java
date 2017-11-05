@@ -3,6 +3,7 @@ package com.webtoonscorp.spring.repository;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.service.sql.service.SqlService;
 import com.webtoonscorp.spring.type.Level;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class UserDaoJdbc implements UserDao {
 
+    @Autowired
     private SqlService sqlService;
 
     private JdbcTemplate jdbcTemplate;
@@ -40,6 +42,7 @@ public class UserDaoJdbc implements UserDao {
         }
     };
 
+    @Autowired
     public void setDataSource(DataSource dataSource) {
 
         this.jdbcTemplate = new JdbcTemplate(dataSource);
