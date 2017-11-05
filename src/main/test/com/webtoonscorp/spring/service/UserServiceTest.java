@@ -1,5 +1,6 @@
 package com.webtoonscorp.spring.service;
 
+import com.webtoonscorp.spring.configuration.SpringPracticeConfiguration;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.repository.TestUserDao;
 import com.webtoonscorp.spring.repository.UserDao;
@@ -29,7 +30,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext
-@ContextConfiguration(locations = "classpath:/context/application-context.xml")
+@ContextConfiguration(classes = SpringPracticeConfiguration.class)
 public class UserServiceTest {
 
     @Autowired
@@ -45,29 +46,6 @@ public class UserServiceTest {
     private PlatformTransactionManager manager;
 
     List<User> users;
-
-    static class TestUserServiceImpl extends UserServiceImpl {
-
-        @Override
-        protected void upgradeLevel(User user) {
-
-            if (user.getId().equals("2")) {
-                throw new TestUserServiceException();
-            }
-
-            user.upgradeLevel();
-        }
-
-        @Override
-        public List<User> getAll() {
-
-            for (User user : super.getAll()) {
-                super.update(user);
-            }
-
-            return null;
-        }
-    }
 
     @Before
     public void setup() {

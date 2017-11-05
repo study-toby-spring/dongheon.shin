@@ -1,6 +1,6 @@
 package com.webtoonscorp.spring.service.sql.service;
 
-import com.webtoonscorp.spring.service.sql.service.SqlService;
+import com.webtoonscorp.spring.configuration.SpringPracticeConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/context/application-context.xml")
+@ContextConfiguration(classes = SpringPracticeConfiguration.class)
 public class XmlSqlServiceTest {
 
     @Autowired

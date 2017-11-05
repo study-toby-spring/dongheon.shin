@@ -52,7 +52,7 @@
         <property name="dataSource" ref="embeddedDatabase"/>
     </bean>
 
-    <bean name="testUserService" class="com.webtoonscorp.spring.service.UserServiceTest$TestUserServiceImpl" parent="userService"/>
+    <bean name="testUserService" class="com.webtoonscorp.spring.service.TestUserServiceImpl" parent="userService"/>
 
     <bean name="mailSender" class="com.webtoonscorp.spring.support.mail.MailSenderImpl"/>
 
