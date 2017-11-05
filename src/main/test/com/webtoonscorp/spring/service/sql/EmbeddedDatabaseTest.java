@@ -18,8 +18,8 @@ public class EmbeddedDatabaseTest {
     EmbeddedDatabase database;
     JdbcTemplate template;
 
-    String[] keys = new String[] { "key1", "key2" };
-    String[] sqls = new String[] { "sql1", "sql2" };
+    String[] keys = new String[] { "key1", "key2", "key3" };
+    String[] sqls = new String[] { "sql1", "sql2", "sql3" };
 
     @Before
     public void setup() {
@@ -56,12 +56,12 @@ public class EmbeddedDatabaseTest {
     @Test
     public void insert() {
 
-        String key = "key3";
-        String sql = "sql3";
+        String key = "key4";
+        String sql = "sql4";
 
         template.update("INSERT INTO SQLMAP(KEY_, SQL_) VALUES (?, ?)", key, sql);
 
-        assertThat(template.queryForObject("SELECT COUNT(*) FROM SQLMAP", Integer.class), is(3));
+        assertThat(template.queryForObject("SELECT COUNT(*) FROM SQLMAP", Integer.class), is(4));
     }
 
 }

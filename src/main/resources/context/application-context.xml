@@ -3,12 +3,17 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <context:property-placeholder location="classpath*:property/*.properties"/>
     <context:annotation-config/>
 
     <tx:annotation-driven transaction-manager="manager"/>
+
+    <jdbc:embedded-database id="embeddedDatabase">
+        <jdbc:script location="classpath:/sql/hsqldb/ddl.sql"/>
+    </jdbc:embedded-database>
 
     <bean name="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 
@@ -43,7 +48,9 @@
         <property name="mappingLocation" value="/sql/mapping.xml"/>
     </bean>
 
-    <bean id="sqlRegistry" class="com.webtoonscorp.spring.service.sql.registry.ConcurrentHashMapSqlRegistry"/>
+    <bean id="sqlRegistry" class="com.webtoonscorp.spring.service.sql.registry.EmbeddedDatabaseSqlRegistry">
+        <property name="dataSource" ref="embeddedDatabase"/>
+    </bean>
 
     <bean name="testUserService" class="com.webtoonscorp.spring.service.UserServiceTest$TestUserServiceImpl" parent="userService"/>
 
