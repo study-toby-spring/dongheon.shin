@@ -1,6 +1,7 @@
 package com.webtoonscorp.spring.oxm;
 
 import com.webtoonscorp.spring.configuration.SpringPracticeConfiguration;
+import com.webtoonscorp.spring.configuration.SpringPracticeTestConfiguration;
 import com.webtoonscorp.spring.jaxb.SqlType;
 import com.webtoonscorp.spring.jaxb.Sqlmap;
 import org.junit.Test;
@@ -21,7 +22,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringPracticeConfiguration.class)
+@ContextConfiguration(classes = { SpringPracticeConfiguration.class, SpringPracticeTestConfiguration.class })
 public class OxmTest {
 
     @Autowired

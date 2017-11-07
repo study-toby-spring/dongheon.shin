@@ -17,7 +17,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Proxy;
@@ -41,9 +40,6 @@ public class UserServiceTest {
 
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private PlatformTransactionManager manager;
 
     List<User> users;
 

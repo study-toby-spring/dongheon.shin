@@ -1,6 +1,7 @@
 package com.webtoonscorp.spring.factory;
 
 import com.webtoonscorp.spring.configuration.SpringPracticeConfiguration;
+import com.webtoonscorp.spring.configuration.SpringPracticeTestConfiguration;
 import com.webtoonscorp.spring.domain.Message;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringPracticeConfiguration.class)
+@ContextConfiguration(classes = { SpringPracticeConfiguration.class, SpringPracticeTestConfiguration.class })
 public class MessageFactoryBeanTest {
 
     @Autowired

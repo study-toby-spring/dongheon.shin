@@ -1,6 +1,7 @@
 package com.webtoonscorp.spring.repository;
 
 import com.webtoonscorp.spring.configuration.SpringPracticeConfiguration;
+import com.webtoonscorp.spring.configuration.SpringPracticeTestConfiguration;
 import com.webtoonscorp.spring.domain.User;
 import com.webtoonscorp.spring.type.Level;
 import org.junit.Before;
@@ -22,7 +23,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringPracticeConfiguration.class)
+@ContextConfiguration(classes = { SpringPracticeConfiguration.class, SpringPracticeTestConfiguration.class })
 public class UserDaoTest {
 
     @Autowired
