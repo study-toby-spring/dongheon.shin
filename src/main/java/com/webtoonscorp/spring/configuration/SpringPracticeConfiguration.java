@@ -1,14 +1,14 @@
 package com.webtoonscorp.spring.configuration;
 
+import com.mysql.jdbc.Driver;
 import com.webtoonscorp.spring.factory.MessageFactoryBean;
 import com.webtoonscorp.spring.service.TestUserServiceImpl;
 import com.webtoonscorp.spring.service.UserService;
 import com.webtoonscorp.spring.service.sql.service.OxmSqlService;
 import com.webtoonscorp.spring.service.sql.service.SqlService;
 import com.webtoonscorp.spring.support.mail.TestMailSender;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.MailSender;
@@ -25,8 +25,17 @@ import javax.sql.DataSource;
 @Import({ SqlServiceConfiguration.class })
 public class SpringPracticeConfiguration {
 
-    @Autowired
-    private Environment environment;
+    @Value("${db.driverClass}")
+    private Class<? extends Driver> driverClass;
+
+    @Value("${db.url}")
+    private String url;
+
+    @Value("${db.username}")
+    private String username;
+
+    @Value("${db.password}")
+    private String password;
 
     @Configuration
     @Profile("test")
@@ -72,15 +81,10 @@ public class SpringPracticeConfiguration {
 
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 
-        try {
-            dataSource.setDriverClass((Class<? extends java.sql.Driver>) Class.forName(environment.getProperty("db.driverClass")));
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        dataSource.setUrl(environment.getProperty("db.url"));
-        dataSource.setUsername(environment.getProperty("db.username"));
-        dataSource.setPassword(environment.getProperty("db.password"));
+        dataSource.setDriverClass(driverClass);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
 
         return dataSource;
     }
