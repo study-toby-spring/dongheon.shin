@@ -1,6 +1,7 @@
 package com.webtoonscorp.spring.configuration;
 
 import com.mysql.jdbc.Driver;
+import com.webtoonscorp.spring.configuration.sql.EnableSqlService;
 import com.webtoonscorp.spring.factory.MessageFactoryBean;
 import com.webtoonscorp.spring.service.TestUserServiceImpl;
 import com.webtoonscorp.spring.service.UserService;
@@ -22,7 +23,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.webtoonscorp.spring")
 @PropertySource("classpath:/property/database.properties")
-@Import({ SqlServiceConfiguration.class })
+@EnableSqlService
 public class SpringPracticeConfiguration {
 
     @Value("${db.driverClass}")
